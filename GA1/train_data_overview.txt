@@ -1,0 +1,28 @@
+Difficult images due to e.g. several persons: the index reported below is index according to train dataframe, get the images for visualization using `train.loc[index].img`
+
+(Structure: "- index: explanation")
+
+- 18: 2 faces
+- 25: 2 faces, but one is a cartoon so likely OK
+- 28: 3 faces, HAAR detects fragment of the wall
+- 29: 2 faces,
+- 30: 2 faces, but same person (just a close-up)
+- 32: 2 faces, but same person (just a close-up)
+- 34: 3 faces, class label 1 but lookalike present
+- 39: 2 faces
+- 40: 2 faces, skew pose of real face, HAAR detects background face
+- 41: 2 faces
+- 49: 2 faces, HAAR detects wrong one
+- 50: 2 faces, HAAR detects wrong one
+- 52: 2 faces
+- 53: 2 faces
+- 57: 2 faces but close-up, sunglasses
+- 59: 2 faces, MTCNN detects wrong one
+- 61: 2 faces, I'm not sure if they are the same person :))))
+- 64: black and white face
+- 65: image not found?
+- 70: 3 faces, HAAR detects wrong one
+- 77: 2 faces, close up
+
+In the following indices: there was no detection/false detection by HAAR (no face): 
+5, 14, 23, 24, 28, 35, 60, 65
