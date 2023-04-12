@@ -1,0 +1,85 @@
+# 2. Evaluation Metrics
+
+#%% md
+The evaluation metrics used throughout the assignment are measures that give us the performance of the face recognition system as a whole. While there are other ones that provide us with the similarity or distance between predicted and true identities that might be used internally in different implemented methods or packages, we decided to just focus on those first ones. Below, we discuss these measures in the context of a binary classification problem as a starting point, with the two classes called positives and negatives; and then we move to the 3-label classification case that is present in this assignment.
+#%% md
+## 2.1. Accuracy
+#%% md
+The first evaluation metric, which was already provided in the template, was accuracy. Accuracy gives us the ratio between the number of correct predictions and the total amount of them. For a binary classification problem, the formula would be the following one:
+\begin{equation*}
+    \text{accuracy}  = \frac{\text{TP} +\text{TN} }{\text{TP} +\text{TN} +\text{FP}+\text{FN} }
+\end{equation*}
+where TP stands for *true positives*, TN for *true negatives*, FP for *false positives* and FN for *false negatives*. However, since we have a multilabel classification problem, the resulting score means the same but the formula gets slightly modified:
+\begin{equation*}
+    \text{accuracy}  = \frac{\text{number of correctly predicted labels} }{\text{total number of predictions} }
+\end{equation*}
+
+Although it is used a lot in classification, it has a couple of clear *disadvantages* that force us to use other measures as well. Its clearest flaw is its misleadingness when the data is imbalanced. When a class has many more examples than others, a classifier that always predicts the majority class would get a really high accuracy while in reality it would be quite poor if it cannot properly label any other class. However, accuracy it is still a decent starting point to measure the performance of a classifier. In our case, our class distributions are indeed not evenly balanced, but the degree of imbalance is relatively moderate and accuracy gives a rough estimate of a classifier's performance.
+#%% md
+## 2.2. Precision
+#%% md
+Precision is the next score, which measures the model's ability to correctly identify positive examples. For a binary classification problem, the formula is:
+\begin{equation*}
+    \text{precision}  = \frac{\text{TP} }{\text{TP} +\text{FP} }
+\end{equation*}
+where TP stands for *true positives* and FP for *false positives*.
+
+For the 3-label classification scenario, each label will get the precision score calculated separately, using the same formula as before. The only change would be that here, TP would be the number of examples predicted correctly as being a specific label *(0, 1 or 2)*, and FP the number of them predicted as belonging to that same label, but actually being from a different one.
+
+Precision is easy to interpret and useful in multi-class cases, since it can show in our case which is the label with a higher number of false positives. However, it also has its couple of main drawbacks. The first one would be the lack of accountability for false negatives, which might be another useful number to have in mind; and a sensitivity towards class imbalance, in a similar way as in accuracy. That is why it should and it is actually used in conjunction with the following two metrics, which complement precision perfectly to *dodge* its flaws.
+#%% md
+## 2.3. Recall
+#%% md
+Recall tells us the performance of the system as the ratio between the true positives to the sum of those same ones and the false positives. It basically measures the proportion of positive examples that are predicted correctly by the system. Its formula is similar to the previous one with a slight change in the denominator to consider *false negatives* instead of *false positives*:
+\begin{equation*}
+    \text{recall}  = \frac{\text{TP} }{\text{TP} +\text{FN} }
+\end{equation*}
+where TP stands for *true positives* and FN for *false negatives*.
+
+For the 3-label classification case, the behaviour is exactly the same as for precision. Each label gets its recall score calculated separately with the formula above. Although in this measure, its peak utility is shown in situations where identifying all instances of a class is important and false negatives have notable consequences. A high score would indicate that the system is able to identify correctly most of the relevant instance of a class. However, it has similar flaws as its predecessor, and that is why both of them get calculated together for accountability for false positives and false negatives.
+#%% md
+## 2.4. F1-score
+#%% md
+The F1-score is the harmonic mean of precision and recall, which provides a balance between these two, and therefore, it gives us a better overview of the performance of the system. It is calculated as follows:
+\begin{equation*}
+    f1 = \frac{2 \cdot \text{precision} \cdot \text{recall} }{\text{precision} +\text{recall}} = \frac{2  \text{TP}}{2  \text{TP}+\text{FP}+\text{FN}}
+\end{equation*}
+where TP stands for *true positives*, FP for *false positives* and FN for *false negatives*.
+
+The score ranges between 0 and 1, as for all the previous ones as well, even though the meaning of having a score of *1* would be that a perfect precision and recall have been achieved. When there are no specific preferences towards better precision or better recall, the F1-score can be used to easily compare different models. The one that has the higher F1-score being the better-performing one. Therefore, it is really useful in our case when trying to come up with different classifiers and different ways of getting feature representations, and it is the main metric mentioned in the discussions about the results of the classifiers.
+
+Exactly as in the previous metrics, for the 3-label classification case each label gets its F1-score independently calculated. However, after obtaining the F1-scores for all the labels, we also calculate what it is called the *macro average F1-score* and *micro average F1-score*. This first new measure is the unweighted average of the F1-scores for each class, which gives equal importance to each one. On the other hand, the *micro average F1-score* gets calculated using a single precision and recall value for the entirety of the data.
+
+Either way, all of these measures derived from the original, binary F1-score are a good metric that avoid the main flaws of recall and precision and provide a good, intuitive metric for checking the overall performance of a system.
+#%% md
+## 2.5. Confusion matrix
+#%% md
+While the previous discussion relied on a binary classification problem as a starting point, since our face recognition application is actually a multi-class classification problem where there are three possible labels: *1* for *Jesse*, *2* for *Mila* and *0* for their lookalikes; in this subsection we will move directly to the multiclass scenario. So, in this kind of problems, confusion matrices are convenient to estimate the performance of a classifier. A confusion matrix is a table where the differences between the true labels and the predicted ones for each class can be seen. Therefore, it is one of the most useful metrics/tools can we can use. Its structure would be like this:
+<table>
+  <tr>
+    <th></th>
+    <th>Actual Label 0</th>
+    <th>Actual Label 1</th>
+    <th>Actual Label 2</th>
+  </tr>
+  <tr>
+    <td><strong>Predicted Label 0</strong></td>
+    <td>TP for Label 0</td>
+    <td>FP for Label 0</td>
+    <td>FP for Label 0</td>
+  </tr>
+  <tr>
+    <td><strong>Predicted Label 1</strong></td>
+    <td>FN for Label 1</td>
+    <td>TP for Label 1</td>
+    <td>FP for Label 1</td>
+  </tr>
+  <tr>
+    <td><strong>Predicted Label 2</strong></td>
+    <td>FN for Label 2</td>
+    <td>FN for Label 2</td>
+    <td>TP for Label 2</td>
+  </tr>
+</table>
+
+This matrix is where the previous metrics get calculated from, but it is also a great tool of evaluating the different models on its own, since it gives a complete breakdown that leads to knowing on which classes the system is performing well and which ones need some additional work. You can easily tell for each case what the main problems and strengths might be if you are getting low or high scores in any of the previous measures.
